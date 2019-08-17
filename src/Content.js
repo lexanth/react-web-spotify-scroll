@@ -2,8 +2,10 @@ import React from 'react'
 import styled from 'styled-components/macro'
 import TrackItem from './TrackItem'
 import ExpandedHeader from './ExpandedHeader'
+import { useScroll } from 'react-use-gesture'
+import { animated } from 'react-spring'
 
-const TracksContainer = styled.div`
+const TracksContainer = styled(animated.div)`
   overflow-y: scroll;
   scrollbar-width: none;
   position: relative;
@@ -19,10 +21,14 @@ const Tracks = styled.div`
   padding-top: 32px;
 `
 
-const Content = ({ album }) => {
+const Content = ({ album, y, setY }) => {
+  const bind = useScroll(({ xy }) => {
+    setY({ y: xy[1] })
+  })
+
   return (
-    <TracksContainer>
-      <ExpandedHeader artist={album.artist} />
+    <TracksContainer {...bind()}>
+      <ExpandedHeader artist={album.artist} y={y} />
       <Tracks>
         {album.tracks.map((track, index) => (
           <TrackItem

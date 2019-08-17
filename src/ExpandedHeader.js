@@ -1,7 +1,12 @@
 import React from 'react'
 import styled from 'styled-components/macro'
+import { animated } from 'react-spring'
 import { absoluteFill } from './absoluteFill'
-import { EXPANDED_HEADER_HEIGHT, BUTTON_HEIGHT } from './constants'
+import {
+  EXPANDED_HEADER_HEIGHT,
+  BUTTON_HEIGHT,
+  COLLAPSED_HEADER_HEIGHT,
+} from './constants'
 
 const Container = styled.div`
   display: flex;
@@ -10,7 +15,7 @@ const Container = styled.div`
   position: relative;
   flex: 1 0 ${EXPANDED_HEADER_HEIGHT}px;
 `
-const Gradient = styled.div`
+const Gradient = styled(animated.div)`
   position: absolute;
   bottom: 0;
   left: 0;
@@ -26,7 +31,7 @@ const ExpandedHeaderText = styled.span`
   color: white;
   font-size: 48px;
 `
-const ExpandedHeaderTextContainer = styled.div`
+const ExpandedHeaderTextContainer = styled(animated.div)`
   ${absoluteFill};
   display: flex;
   flex-direction: column;
@@ -35,9 +40,19 @@ const ExpandedHeaderTextContainer = styled.div`
   padding-bottom: ${BUTTON_HEIGHT}px;
 `
 
-const ExpandedHeader = ({ artist }) => {
-  const height = EXPANDED_HEADER_HEIGHT
-  const opacity = 1
+const ExpandedHeader = ({ artist, y }) => {
+  const height = y
+    .interpolate({
+      range: [0, EXPANDED_HEADER_HEIGHT],
+      output: [EXPANDED_HEADER_HEIGHT, 0],
+      extrapolate: 'clamp',
+    })
+    .interpolate(heightValue => `${heightValue}px`)
+  const opacity = y.interpolate({
+    range: [0, EXPANDED_HEADER_HEIGHT / 2],
+    output: [1, 0],
+    extrapolate: 'clamp',
+  })
   return (
     <Container>
       <Gradient style={{ height }} />
