@@ -14,9 +14,9 @@ const AlbumContainer = styled.div`
 `
 
 const config = {
-  // mass: 1,
+  tension: 500,
+  friction: 20,
   clamp: true,
-  velocity: 1000,
 }
 
 const Album = ({ album }) => {
