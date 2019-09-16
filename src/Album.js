@@ -13,14 +13,8 @@ const AlbumContainer = styled.div`
   position: relative;
 `
 
-const config = {
-  tension: 500,
-  friction: 20,
-  clamp: true,
-}
-
 const Album = ({ album }) => {
-  const [{ y }, setY] = useSpring(() => ({ y: 0, config }))
+  const [{ y }, setY] = useSpring(() => ({ y: 0, immediate: true }))
   return (
     <AlbumContainer>
       <Cover src={album.cover} y={y} />
